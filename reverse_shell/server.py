@@ -3,15 +3,18 @@ import sys
 # this integrates cli and terminal commands
 
 # define some global variables
-
+host: str = ""
+port: int = 0
+sock: socket = socket.socket()
 
 # create a socket
 def create_socket():
+    global host
+    global port
+    global sock
+
     # enclose in try/except block to handle connection errors
     try:
-        global host
-        global port
-        global sock
         host = ""
         port = 9999
         sock = socket.socket()
@@ -20,10 +23,11 @@ def create_socket():
 
 # bind socket and listening port for connections
 def bind_socket():
+    global host
+    global port
+    global sock
+
     try:
-        global host
-        global port
-        global sock
         print('Binding the port: ' + str(port))
 
         sock.bind((host, port)) # (host, port) is a tuple - bind host and port
@@ -61,7 +65,3 @@ def main():
     accept_connection()
 
 main()
-
-
-
-
